@@ -1,0 +1,204 @@
+﻿body, .main-head {
+	min-width: 970px;
+}
+
+body {
+	margin: 0;
+	background-color: #d2d2d2;
+	padding-top: 50px;
+	-ms-overflow-style: scrollbar;
+}
+
+.display-none{
+	display:none;
+}
+
+/*-----main head-------------*/
+/*================================================*/
+.main-head {
+	height: 50px;
+	background-color: #222;
+	border-color: #080808;
+	top: 0;
+	border-width: 0 0 1px;
+	position: fixed;
+	right: 0;
+	left: 0;
+	z-index: 1030;
+}
+
+	.main-head > .left {
+		padding: 15px;
+		float: left;
+	}
+
+	.main-head > .right {
+		padding: 15px;
+		float: right;
+	}
+
+	.main-head .profile {
+		height: 30px;
+		margin-top: -5px;
+		padding: 0 20px;
+	}
+
+	.main-head .notifications {
+		position: relative;
+	}
+
+		.main-head .notifications .badge {
+			color: #FFF;
+			background-color: red;
+			position: absolute;
+			right: 3px;
+			top: 8px;
+			font-size: 10px;
+			font-weight: normal;
+			line-height: 9px;
+			height: 15px;
+		}
+
+	.main-head > ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		/*overflow: hidden;*/
+	}
+
+		.main-head > ul > li {
+			float: left;
+		}
+
+			.main-head > ul > li .title {
+				font-size: 15px;
+				color: #FFF;
+				padding: 10px;
+			}
+
+		.main-head > ul:not(.main-menu) > li > a, .main-head ul:not(.main-menu) > li > a:active {
+			color: #9d9d9d;
+			padding: 15px;
+			text-decoration: none;
+		}
+
+			.main-head > ul:not(.main-menu) > li > a:hover, .main-head ul:not(.main-menu) > li > a:focus {
+				color: #fff;
+				text-decoration: none;
+			}
+
+	.main-head .tools > a.dropdown-toggle:hover {
+		background-color: black;
+	}
+
+.main-menu {
+	margin-top: 15px !important;
+	border-radius:0;
+}
+
+/*-----body content-------------*/
+/*================================================*/
+
+.body-content .head {
+	background-color: white;
+	padding: 5px 15px;
+	border-bottom: 1px ridge #d2d2d2;
+}
+
+	.body-content .head .left {
+		float: left !important;
+		margin-top: 5px;
+	}
+
+	.body-content .head .right {
+		float: right !important;
+	}
+
+.body-content .body {
+	background-color: white;
+	margin: 8px 5px;
+	padding: 20px;
+}
+
+footer {
+	padding: 5px 10px;
+	font-size: 9px;
+}
+
+/*-----logo-------------*/
+/*================================================*/
+
+.logo-sm-white {
+	background: url(/images/logos/KPMG_LOGO_64x64.png) center no-repeat;
+	width: 90px;
+	height: 50px;
+	padding: 10px;
+	border: none !important;
+}
+
+.logo-sm-blue {
+	background: url(/images/logos/KPMG_NoCP_RGB_sm.png) center no-repeat;
+	width: 100px;
+	height: 60px;
+	margin-left: 10px;
+	border: none !important;
+}
+
+.logo {
+	background: url(/images/logos/KPMG_NoCP_RGB_280.png) center no-repeat;
+	width: 256px;
+	height: 100px;
+	padding: 10px;
+	border: none !important;
+}
+
+/*-----table-------------*/
+/*================================================*/
+
+.table.hover > tbody > tr:hover {
+	background-color: #e9e9e9;
+}
+
+table.dataTable {
+	border-collapse: collapse !important;
+}
+
+.table-bordered > thead > tr.x-filter-row > th {
+	border-bottom-width: 1px !important;
+}
+
+.table-bordered > thead > tr> th {
+	font-size: 13px !important;
+}
+
+/*-----input groups-------------*/
+/*================================================*/
+.input-group-addon.primary {
+	color: rgb(255, 255, 255);
+	background-color: rgb(50, 118, 177);
+	border-color: rgb(40, 94, 142);
+}
+
+.input-group-addon.success {
+	color: rgb(255, 255, 255);
+	background-color: rgb(92, 184, 92);
+	border-color: rgb(76, 174, 76);
+}
+
+.input-group-addon.info {
+	color: rgb(255, 255, 255);
+	background-color: rgb(57, 179, 215);
+	border-color: rgb(38, 154, 188);
+}
+
+.input-group-addon.warning {
+	color: rgb(255, 255, 255);
+	background-color: rgb(240, 173, 78);
+	border-color: rgb(238, 162, 54);
+}
+
+.input-group-addon.danger {
+	color: rgb(255, 255, 255);
+	background-color: rgb(217, 83, 79);
+	border-color: rgb(212, 63, 58);
+}

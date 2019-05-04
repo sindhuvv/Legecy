@@ -1,0 +1,16 @@
+.DS_Store
+*.user
+*.suo
+bin
+Bin
+obj
+Obj
+*resharper*
+.DS_Store
+*.sassc
+*.scssc
+.sass-cache
+packages
+/.vs/
+*.vs
+/Tms/Tms.Web/Logs

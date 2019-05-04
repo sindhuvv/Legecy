@@ -1,0 +1,22 @@
+﻿@model TrainingsViewModel
+@{
+	ViewData["Title"] = "TMS";
+}
+@section headBar2Left{
+	<span id="pageTitle">Dashboard</span>
+}
+@section headBar2Right{
+	<button id="btnEmailSend" style="margin-right:10px; margin-left:5px;" class="btn btn-info btn-sm"><span class="fas fa-email-send"></span>&nbsp; Send Email</button>
+	<button style="margin-right:10px; margin-left:5px;" class="btn btn-info btn-sm"><span class="fas fa-file-export"></span>&nbsp; Export to Excel</button>
+}
+
+<partial name="../Poc/_Dashboard.cshtml" />
+<script src="~/js/chart.js"></script>
+<script type="text/jscript">
+	$('#btnEmailSend').click(function () {
+		var url = "/send-email";
+		$.get(url, null, function (data) {
+		});
+	})
+</script>
+

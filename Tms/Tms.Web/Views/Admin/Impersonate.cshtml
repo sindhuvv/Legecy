@@ -1,0 +1,20 @@
+﻿@model ImpersonateViewModel
+
+@{
+	ViewBag.Title = "Impersonate";
+}
+
+@Html.ValidationSummary(false)
+@using (Html.BeginForm())
+{
+	<div class="col-medium">
+		<div class="form-group col-sm">
+			<label asp-for="Upn">Delegate</label>
+			@*<kpmg-utb asp-for="Upn" asp-type="@UtbType.Employee"></kpmg-utb>*@
+			<input type="text" asp-for="Upn" />
+		</div>
+	</div>
+	<div class="col-full">
+		<input type="submit" class="btn btn-primary" value="Impersonate" />
+	</div>
+}

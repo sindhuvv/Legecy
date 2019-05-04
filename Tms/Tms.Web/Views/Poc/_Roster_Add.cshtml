@@ -1,0 +1,40 @@
+﻿<div id="rosterAddContainer" style="width:800px;">
+	<form>
+		
+		<div class="form-group" style="width:400px;">
+			<label for="">Employee</label>
+			<div class='input-group'>
+				<input type='text' class="form-control" />
+				<span class="input-group-addon primary">
+					<span class="fas fa-search"></span>
+				</span>
+			</div>
+		</div>
+		<div class="form-group" style="width:400px;">
+			<label for="">Notes</label>
+			<textarea type="text" class="form-control"></textarea>
+		</div>
+		<div class="form-check">
+			<input type="checkbox" class="form-check-input" id="exampleCheck1">
+			<label class="form-check-label" for="exampleCheck1">Is Active</label>
+		</div>
+		<br />
+		<button type="button" class="btn btn-primary" id="rosterAddSubmitButton"><i class="fa fa-user-plus"></i>&nbsp; Add Participant</button>
+		<button type="reset" class="btn btn-warning" id="rosterAddCancelButton"><i class="fa fa-undo"></i>&nbsp; Reset</button>
+	</form>
+</div>
+<script>
+	$(function () {
+		$("#newRosterButton").click(function () {
+			atc.roster.showAdd();
+		});
+
+		$("#rosterTable").on("click", ".x-edit-roster-button", function () {
+			atc.roster.showEdit();
+		});
+
+		$("#rosterAddCancelButton, #rosterAddSubmitButton").click(function () {
+			atc.closeAddEditPage();
+		})
+	});
+</script>

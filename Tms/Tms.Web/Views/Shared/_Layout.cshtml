@@ -1,0 +1,115 @@
+﻿@{
+	@inject ISecurityService securityService;
+	var impersonating = securityService.HasImpersonationToken();
+
+	@inject IIdentityService identityService;
+	var upn = await identityService.GetUserUpn();
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>@ViewBag.Title</title>
+	<base href="/">
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
+	<link href="~/css/jquery-ui.css" rel="stylesheet" />
+	<link href="~/css/select2.min.css" rel="stylesheet" />
+	<link href="~/css/select2-bootstrap4.min.css" rel="stylesheet" />
+	<link href="~/lib/fontawesome-5.5/css/all.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link href="~/lib/datatables/datatables.min.css" rel="stylesheet" />
+	<link href="~/lib/fullcalendar/fullcalendar.min.css" rel="stylesheet" />
+	<link href="~/lib/fullcalendar/fullcalendar.print.min.css" rel="stylesheet" media='print' />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="~/lib/datatables/datatables.min.js"></script>
+
+	<script src="~/lib/fullcalendar/lib/moment.min.js"></script>
+	<script src="~/lib/fullcalendar/fullcalendar.min.js"></script>
+	<script src="~/js/jquery-ui.js"></script>
+	<script src="~/js/select2.min.js"></script>
+	<script src="~/lib/chart.js/Chart.min.js"></script>
+	<script src="~/js/chart-utils.js"></script>
+
+	<script src="~/js/tms.js" asp-append-version="true"></script>
+
+</head>
+<body>
+	<div id="headBar1" class="main-head clearfix">
+		<div>
+			<span class="logo-sm-white navbar-brand" href="javascript:void(0)"></span>
+		</div>
+		<ul class="left">
+			<li>
+				<a href="/" class="home">
+					<i class="fas fa-home fa-lg"></i>
+				</a>
+			</li>
+			<li>
+				<span class="title">
+					Training Management System
+				</span>
+			</li>
+		</ul>
+		<ul class="right">
+			<li>
+				<a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="contact">
+					<span style="font-size: 1.6em;" class="far fa-envelope"></span>
+				</a>
+			</li>
+			<li>
+				<a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" title="print">
+					<span style="font-size: 1.6em;" class="fas fa-print"></span>
+				</a>
+			</li>
+			<li>
+				<a href="javascript:void(0)" class="notifications" data-toggle="tooltip" data-placement="bottom" title="notifications">
+					<span style="font-size: 1.6em;" class="far fa-bell"></span>
+					<span class="badge">5</span>
+				</a>
+			</li>
+			<li>
+				<div class="profile">
+					<a href="#"><img style="height:33px;" class="img-circle" src="~/images/Profiles/Steve-Ws.jpg" /></a>
+				</div>
+			</li>
+			<li class="dropdown tools" dropdown>
+				<a id="mainMenuButton" href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+					<i class="fa fa-bars fa-lg"></i>
+				</a>
+				<partial name="_Menu.cshtml" />
+			</li>
+		</ul>
+	</div>
+	<div class="body-content">
+		@if (impersonating)
+		{
+			<br><div class="alert alert-danger">You are currently impersonating: <strong>@upn</strong></div>
+		}
+		<div id="headBar2" class="head clearfix">
+			<div class="left">@RenderSection("headBar2Left", false)</div>
+			<div class="right">@RenderSection("headBar2Right", false)</div>
+		</div>
+		<div class="body clearfix">@RenderBody()</div>
+	</div>
+	<footer>
+		<p>
+			&copy; @DateTime.Now.Year&nbsp;KPMG International Cooperative ("KPMG International"), a Swiss entity. Member firms of the KPMG
+			network of independent firms are affiliated with KPMG International. KPMG International provides no client services. No member
+			firm has any authority to obligate or bind KPMG International or any other member firm vis-à-vis third parties, nor does KPMG
+			International have any such authority to obligate or bind any member firm. All rights reserved.
+		</p>
+	</footer>
+
+	<script>
+		$(function () {
+			$('[data-toggle="tooltip"]').tooltip({ container: 'body' });
+		});
+	</script>
+
+	@RenderSection("Scripts", required: false)
+</body>
+</html>
+

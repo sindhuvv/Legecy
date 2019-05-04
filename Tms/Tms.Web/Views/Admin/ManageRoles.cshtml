@@ -1,0 +1,67 @@
+﻿@model ManageRolesViewModel
+@{
+	ViewData["Title"] = "Manage Roles";
+}
+@section headBar2Left{
+	<span id="pageTitle">Manage Roles</span>
+}
+@section headBar2Right{
+	<form method="post" action="admin/export-roles">
+		<p>
+			<input type="submit" class="btn btn-info" value="Export to Excel" />
+		</p>
+	</form>
+}
+
+<div class="col-full" style="overflow:scroll">
+	<p>
+		<a href="admin/edit-role" class="btn btn-success">
+			<span class="fa fa-plus"></span>
+			New role
+		</a>
+	</p>
+	<table class="table">
+		<tr>
+			<th colspan="4"></th>
+			<th class="text-center" colspan="@Model.GetActions().Count()">Actions</th>
+			<th></th>
+		</tr>
+		<tr>
+			<th>Name</th>
+			<th>Description</th>
+			@foreach (var action in Model.GetActions())
+			{
+				<th>@action</th>
+			}
+			<th></th>
+		</tr>
+		@foreach (var role in Model.Roles)
+		{
+			<tr style="text-align:center">
+				<td><a href="admin/edit-role?id=@role.Id">@role.RoleName</a></td>
+				<td>@role.Description</td>
+				@foreach (var action in Model.GetActions())
+				{
+					<td>@role.IsAuthorized(action).ToYesNoString("Y", "")</td>
+				}
+				<td><a href="~" data-role-id="@role.Id" class="x-role-delete">delete</a></td>
+			</tr>
+		}
+	</table>
+</div>
+
+<script>
+	$(function () {
+		$('.x-role-delete').bind('click', function () {
+			if (!confirm('Are you sure to delete the role?')) return false;
+			var link = $(this);
+			$.post('@Url.Action("DeleteRole", "Admin")', { roleId: $(this).data().roleId },
+				function (response) {
+					var tr = link.closest("tr");
+					tr.hide();
+			});
+
+			return false;
+		});
+	});
+</script>

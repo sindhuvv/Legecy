@@ -1,0 +1,181 @@
+﻿@model TrainingsViewModel
+<div id="sessionsContainerList" class="">
+	<div class="display-none" id="sessionsToolbarHtml">
+		<div class="form-group">
+			<div class="col-md-1 pull-left" style="width:70px;">
+				<label class="pull-left" for="exampleInputEmail1">Training:</label>
+			</div>
+			<div class="col-md-6">
+				<select class="form-control input-sm">
+					<option>Audit New Manger Training Nishad Test</option>
+					<option>Audit NMT</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<table id="sessionsTable" class="table table-striped table-bordered hover compact" style="width:100%">
+		<thead>
+			<tr>
+				<th>Session Name</th>
+				<th>Start Date</th>
+				<th>End Date</th>
+				<th>Region</th>
+				<th>Business Unit</th>
+				<th>Business Area</th>
+				<th>Max<br />Roster</th>
+				<th>Seats<br />Available</th>
+				<th style="min-width:50px !important;">Active?</th>
+				<th style="min-width:90px !important;"></th>
+			</tr>
+			<tr class="x-filter-row">
+				<th></th>
+				<th></th>
+				<th></th>
+				<th>
+					<select style="width:100%;">
+						<option value="">All</option>
+						<option>East</option>
+						<option>West</option>
+					</select>
+				</th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th>
+					<select style="width:100%;">
+						<option value="">All</option>
+						<option>Yes</option>
+						<option>No</option>
+					</select>
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model.Sessions)
+			{
+				<tr>
+					<td>@item.SessionName</td>
+					<td>@item.StartDate.ToShortDateString()</td>
+					<td>@item.EndDate.ToShortDateString()</td>
+					<td>@item.Region</td>
+					<td>@item.BusinessUnitKey</td>
+					<td>@item.BusinessAreaKey</td>
+					<td>@item.RosterMaximum</td>
+					<td>@item.MaxParticipants</td>
+					<td>
+						<span style=" width:60px !important; padding:5px; display: inline-block !important;" class="label @(item.IsActive ? "label-success" : "label-danger") ">
+							@item.IsActive.ToYesNoString()
+						</span>
+					</td>
+					<td>
+						<a class="x-edit-session-button" href="#" style="padding:10px;" data-toggle="tooltip" title="edit"><i class="far fa-edit" style="color:#0094ff"></i></a>
+						<a href="#" class="x-clone-session-button" style="padding:10px;" data-toggle="tooltip" title="clone"><i class="far fa-clone" style="color:green;"></i></a>
+						<a href="#" class="x-delete-session-button" style="padding:10px;" data-toggle="tooltip" title="delete"><i class="far fa-trash-alt" style="color:gray"></i></a>
+					</td>
+				</tr>
+
+			}
+		</tbody>
+
+	</table>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="deleteSessionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Delete Training</h4>
+			</div>
+			<div class="modal-body">
+				Are you sure to delete the session <span id="deleteModalSessionName"></span>
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="deleteSessionModalButton" class="btn btn-danger">Delete</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+	.sessions-toolbar {
+		padding-left: 0;
+	}
+
+		.sessions-toolbar .form-group label {
+			font-weight: normal !important;
+			padding-top: 5px;
+		}
+</style>
+<script>
+	$(function () {
+		atc.sessionsTable = $('#sessionsTable').DataTable({
+			//"lengthMenu": [[-1, 10, 25, 50, 100], ["All", 10, 25, 50, 100]],
+			paging: false,
+			"orderCellsTop": true,
+			fixedHeader: {
+				headerOffset: 50
+			},
+			"dom": '<"sessions-toolbar col-md-5">frtip'
+		});
+
+		var sstbHtmll = $("#sessionsToolbarHtml").html();
+		$("div.sessions-toolbar").html(sstbHtmll);
+
+		// Datatables filter
+		atc.sessionsTable.columns().every(function (index) {
+			$('#sessionsTable thead tr:eq(1) th:eq(' + index + ') select').on('change', function () {
+				atc.sessionsTable.column($(this).parent().index() + ':visible')
+					.search(this.value)
+					.draw();
+			});
+		});
+
+		//newSessionButton
+		//==================================================
+		$("#newSessionButton").click(function () {
+			atc.sessionsList.showAdd();
+		});
+
+		//Table action buttons
+		//==================================================
+		$("#sessionsTable").on("click", ".x-edit-session-button", function () {
+			atc.sessionsList.showEdit();
+			return false;
+		});
+
+
+		$("#sessionsTable").on("click", ".x-clone-session-button", function () {
+			var row_data = [];
+			$(this).closest('tr').find('td').each(function (index) {
+				var tdValue = (index == 0) ? $(this).text() + " Copy" : $(this).html();
+				row_data.push(tdValue);
+			});
+			// you'll need a reference to your DataTable here
+			atc.sessionsTable.row.add(row_data).draw();
+			return false;
+		});
+
+		//Delete modal====================
+		var deleteTr = null;
+		$("#sessionsTable").on("click", ".x-delete-session-button", function () {
+			deleteTr = $(this).closest("tr");
+			var sessionName = deleteTr.find("td:eq(0)").text();
+			$("#deleteModalSessionName").html("\"<i>" + sessionName + "</i>\"");
+
+			$('#deleteSessionModal').modal({
+				backdrop: "static",
+				keyboard: false
+			})
+			return false;
+		});
+
+		$('#deleteSessionModalButton').click(function () {
+			atc.sessionsTable.row(deleteTr).remove().draw();
+			deleteTr.remove();
+			$('#deleteSessionModal').modal('hide');
+		});
+	});
+</script>

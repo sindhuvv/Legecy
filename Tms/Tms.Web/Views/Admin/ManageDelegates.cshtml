@@ -1,0 +1,107 @@
+﻿@model SecurityEmployeeDelegationViewModel
+@{
+	ViewData["Title"] = "Manage Delegates";
+	@inject ICachedSecurityService cachedSecurityService;
+	@inject IIdentityService identityService;
+	Model.ParentUpn = Model.ParentUpn.HasValue ? Model.ParentUpn : await identityService.GetUserUpn();
+	var delegates = await cachedSecurityService.ListDelegations(Model.ParentUpn.Value);
+}
+
+@Html.ValidationSummary(false)
+@using (Html.BeginForm())
+{
+	<div class="col-full">
+		<div class="form-group col-full">
+			<label asp-for="DelegateUpn">Delegate</label>
+			@*<kpmg-utb asp-for="DelegateUpn" asp-type="@UtbType.Employee"></kpmg-utb>*@
+			<input type="text" asp-for="DelegateUpn" />
+			<span asp-validation-for="DelegateUpn"></span>
+		</div>
+		<div>
+			<p>Leaving the dates empty will mean starting now and forever.</p>
+			<div class="col-medium form-group">
+				<label asp-for="EffectiveStartDate">Start Date</label>
+				<kpmg-date asp-for="EffectiveStartDate" id="StartDate" style="width:200px"></kpmg-date>
+				<span asp-validation-for="EffectiveStartDate"></span>
+			</div>
+
+			<div class="col-medium form-group">
+				<label asp-for="EffectiveEndDate">End Date</label>
+				<kpmg-date asp-for="EffectiveEndDate" id="EndDate" style="width:200px"></kpmg-date>
+				<span asp-validation-for="EffectiveEndDate"></span>
+			</div>
+		</div>
+
+		<div class="form-group col-full">
+			<label asp-for="Comments">Comments</label>
+			@Html.TextAreaFor(x => x.Comments, 10, 80, new { })
+		</div>
+	</div>
+	<div class="col-full">
+		<input type="submit" class="btn btn-primary btn-sm" value="Save" />
+	</div>
+}
+
+@if (delegates.Any())
+{
+	<div class="col-full">
+		<h3>Current Delegations</h3>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Employee</th>
+					<th>Start Date</th>
+					<th>End Date</th>
+					<th>Comments</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in delegates)
+				{
+					<tr>
+						<td>@item.DelegateUpn</td>
+						<td>@((item.EffectiveStartDate.HasValue ? item.EffectiveStartDate.Value : item.CreatedDateTime).ToKpmgShortDateString())</td>
+						<td>@(item.EffectiveEndDate.HasValue ? item.EffectiveEndDate.Value.ToKpmgShortDateString() : "Never")</td>
+						<td>@item.Comments</td>
+						<td><a class="x-remove-click" x-parentUpn="@item.ParentUpn" x-delegateUpn="@item.DelegateUpn" href="#">remove</a></td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}
+
+<script type="text/javascript">
+	$(function () {
+		var defaultDate = new Date();
+		$("#StartDate").datepicker({
+			minDate: defaultDate,
+			onSelect: function (selectedDate) {
+				_minDate = $(this).datepicker('getDate');
+				if (_minDate) {
+					_minDate.setDate(_minDate.getDate());
+					if ($("#StartDate").val() > $("#EndDate").val()) {
+						$("#EndDate").val($("#StartDate").val());
+					}
+				}
+			},
+		});
+		$("#EndDate").datepicker({
+			beforeShow: function (input, inst) {
+				inst.settings.minDate = $("#StartDate").val();
+			}
+		});
+
+		$(".x-remove-click").click(function () {
+			var link = $(this);
+			$.post('@Url.Action("DeleteDelegation", "Admin")', { parentUpn: link.attr("x-parentUpn"), delegateUpn: link.attr("x-delegateUpn") },
+				function (response) {
+					var tr = link.closest("tr");
+					tr.hide();
+			});
+			return false;
+		});
+	});
+</script>
+

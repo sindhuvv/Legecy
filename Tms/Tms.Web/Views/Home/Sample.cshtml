@@ -1,0 +1,61 @@
+﻿@model SampleViewModel
+@{
+	ViewData["Title"] = "Sample";
+}
+
+<h2>Sample Controls</h2>
+
+<div class="row">
+	<div class="col-lg-10">
+		<div class="form-group">
+		<div class="form-group">
+			<label>Delete Record: </label>
+			<a class="btn" delete-record="true" table-name="@("TrainingSessionRoster")" table-identifier="113">Delete</a>
+		</div>
+		<div class="form-group">
+			<label asp-for="Notes">Auto Save</label>
+			<input type="text" asp-for="Notes" auto-save="true" table-name="@("TrainingSessionRoster")" table-identifier="2449" />
+		</div>
+		<div class="form-group">
+			<button type="button" class="btn btn-primary btn-lg" bs-toggle-modal="simpleModalWithFooter">Launch modal</button>
+			<modal id="simpleModalWithFooter" title="Modal Title">
+				<kpmg-modal-body>
+					<h4>Testing</h4>
+					<p>Testing</p>
+				</kpmg-modal-body>
+				<kpmg-modal-footer dismiss-text="Close">
+					<button type="button" class="btn btn-primary">Save Changes</button>
+				</kpmg-modal-footer>
+			</modal>
+		</div>
+		<div class="form-group">
+			<label asp-for="DateSample">Date Control</label>
+			<kpmg-date asp-for="DateSample" style="width:200px"></kpmg-date>
+		</div>
+		<div class="form-group">
+			<label asp-for="UPN">Simple UTB Control</label>
+			<kpmg-utb asp-for="UPN" asp-type="@UtbType.Employee"></kpmg-utb>
+		</div>
+		<div class="form-group">
+			<label asp-for="SimpleUPN" class="control-label">Simple DropDown</label>
+			<kpmg-simple-dropdown asp-for="SimpleUPN" asp-items="@SampleViewModel.GetSelectList()" style="width:200px"></kpmg-simple-dropdown>
+		</div>
+		<div class="form-group">
+			<label asp-for="MultiUPN" class="control-label">MultiSelect DropDown</label>
+			<kpmg-multi-dropdown asp-for="MultiUPN" asp-items="@SampleViewModel.GetSelectList()" style="width:200px"></kpmg-multi-dropdown>
+		</div>
+		<div class="form-group">
+			<label>Line Chart</label>
+			<kpmg-line-chart id="sampleLine" data="@Model.LineChart"></kpmg-line-chart>
+		</div>
+		<div class="form-group">
+			<label>Pie Chart</label>
+			<kpmg-pie-chart id="samplePie" data="@Model.PieChart"></kpmg-pie-chart>
+		</div>
+		<div class="form-group">
+			<label>Doughnut Chart</label>
+			<kpmg-doughnut-chart id="sampleDoughnut" data="@Model.DoughnutChart"></kpmg-doughnut-chart>
+		</div>
+	</div>
+</div>
+</div>

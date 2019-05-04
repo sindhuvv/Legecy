@@ -1,0 +1,36 @@
+﻿@model TrainingsViewModel
+
+@{
+	ViewData["Title"] = "TMS";
+	Layout = "_PocLayout";
+}
+@section headBar2Left{
+	<span id="pageTitle">Home</span>
+}
+@section headBar2Right{
+	<button class="btn btn-success btn-sm" id="newTrainingButton"><span class="fa fa-plus"></span>&nbsp; New Training</button>
+	<button class="btn btn-success btn-sm display-none" id="newSessionButton"><span class="fa fa-plus"></span>&nbsp; New Session</button>
+	<button class="btn btn-success btn-sm display-none" id="addRosterFromPopulationButton"><span class="fa fa-user-plus"></span>&nbsp; Add Participants from Population</button>
+	<button style="margin-right:10px; margin-left:5px;" class="btn btn-info btn-sm"><span class="fas fa-file-export"></span>&nbsp; Export to Excel</button>
+
+}
+
+<partial name="_Dashboard.cshtml" />
+
+<partial name="_Trainings.cshtml" />
+<partial name="_Trainings_Add.cshtml" />
+
+<partial name="_SessionsCal.cshtml" />
+<partial name="_SessionsList.cshtml" />
+<partial name="_Sessions_Add.cshtml" />
+
+<partial name="_Roster.cshtml" />
+
+<script src="~/js/chart.js"></script>
+<script type="text/javascript">
+
+	$(function () {
+		atc.hideAll(true);
+	});
+</script>
+

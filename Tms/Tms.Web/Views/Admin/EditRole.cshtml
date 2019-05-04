@@ -1,0 +1,139 @@
+﻿@model SecurityUserRoleViewModel
+
+@{
+	if (Model.Id.HasValue)
+	{
+		ViewBag.Title = "Edit Role";
+	}
+	else
+	{
+		ViewBag.Title = "Create Role";
+	}
+}
+
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken()
+	@Html.ValidationSummary(false)
+	@Html.HiddenFor(x => x.Id)
+
+	<div class="col-full">
+		<div class="col-large form-group">
+			<label asp-for="RoleName">Role Name</label>
+			@if (Model.IsBuiltIn)
+			{
+				<input type="hidden" asp-for="RoleName" />
+				<p class="form-control-static"><strong>@Model.RoleName</strong></p>
+			}
+			else
+			{
+				<input type="text" asp-for="RoleName" />
+			}
+			<span asp-validation-for="RoleName"></span>
+		</div>
+		<div class="col-large form-group">
+			<label asp-for="Description">Description</label>
+			<textarea asp-for="Description" rows="5" cols="40"></textarea>
+			<span asp-validation-for="Description"></span>
+		</div>
+		<div class="col-large">
+			@Html.CheckBoxFor(x => x.IsBuiltIn) IsBuiltIn
+		</div>
+		<div class="col-large">
+			<span asp-validation-for="CommaDelimitedSelectiedActions"></span>
+			<h4>Actions</h4>
+			@foreach (var item in Model.GetActionChoices())
+			{
+				<input type="checkbox" name="ActionCheckBox" value="@item.Value" @(Model.Actions.Contains((Permissions)(Convert.ToInt32(item.Value))) ? "checked='checked'" : "") />
+				@item.Text
+				<br />
+			}
+			@Html.HiddenFor(x => x.CommaDelimitedSelectiedActions)
+		</div>
+	</div>
+	<div class="col-full form-group">
+		<input type="submit" class="btn btn-primary x-save-click" value="Save">
+		<a href="Admin/manage-roles" class="btn btn-warning">Cancel</a>
+	</div>
+}
+
+@if (!Model.IsBuiltIn && Model.Id.HasValue)
+{
+	<div class="x-add-member-div">
+		<div class="col-full form-group">
+			<input type="hidden" asp-for="Id" class="x-add-to-role-Id" />
+			<label asp-for="MemberToAddUpn">Employee</label>
+			@*<kpmg-utb asp-for="MemberToAddUpn" asp-type="@UtbType.Employee"></kpmg-utb>*@
+			<input type="text" asp-for="MemberToAddUpn" />
+		</div>
+		<div class="button-row">
+			<input type="button" value="Add Member" class="x-add-to-role-click btn btn-primary" />
+		</div>
+		<div class="col-full x-user-group-role-id">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var upn in Model.Upns)
+					{
+					<tr>
+						<td class="x-upn">@upn</td>
+						<td><a href="~" data-role-id="@Model.Id" data-upn="@upn" class="x-delete-user">delete</a></td>
+					</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+}
+
+<script>
+	$(function () {
+
+		$('.x-delete-user').bind('click', function () {
+			if (!confirm('Are you sure to delete the User?')) return false;
+			var link = $(this);
+			$.post('@Url.Action("DeleteUserRole", "Admin")',  $(this).data() ,
+				function (response) {
+					var tr = link.closest("tr");
+					tr.hide();
+			});
+
+			return false;
+		});
+
+		$(".x-save-click").bind("click", function () {
+			var list = [];
+			$('[name="ActionCheckBox"]:checked').each(function (i, e) {
+				list.push(e.value);
+			});
+			$('#CommaDelimitedSelectiedActions').val(list.join(','));
+		});
+
+		$("#IsBuiltIn").bind("click", function () {
+			if ($(this).prop("checked")) {
+				$('.x-add-member-div').hide();
+			}
+			else {
+				$('.x-add-member-div').show();
+			}
+		});
+
+		$(".x-add-to-role-click").bind("click", function () {
+			var container = $('.x-user-group-role-id');
+			var val = $('#MemberToAddUpn').val();
+			if (!val) {
+				alert('Please select employee.');
+				return false;
+			}
+			$.post('@Url.Action("AddUserRole", "Admin")', { roleId: '@Model.Id', upn: val },
+				function (response) {
+					window.location.reload(true);
+				});
+		});
+	});
+</script>

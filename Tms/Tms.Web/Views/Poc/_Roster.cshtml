@@ -1,0 +1,97 @@
+﻿@model TrainingsViewModel
+<div id="rosterContainer" class="">
+	<div class="col-md-4">
+		<partial name="_Roster_Add.cshtml" />
+	</div>
+	<div class="col-md-8">
+		<form>
+			<div class="col-md-6" style="text-align:left; padding-left:0">
+				<div class="form-group">
+					<label for="">Training Name</label>
+					<select class="form-control">
+						<option>Audit New Manger Training Nishad Test</option>
+						<option>Audit NMT</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-6" style="text-align:left;padding-left:0">
+				<div class="form-group">
+					<label for="">Session Name</label>
+					<select class="form-control">
+						<option>Temp Session Name1</option>
+						<option>Temp Session Name2</option>
+						<option>Temp Session Name3</option>
+						<option>Temp Session Name4</option>
+					</select>
+				</div>
+			</div>
+		</form>
+
+		<table id="rosterTable" class="table table-bordered hover compact" style="width:100%">
+			<thead>
+
+				<tr>
+					<th></th>
+					<th style="width:230px;">Employee</th>
+					<th style="width:230px;">Status</th>
+					<th>Notes</th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					var rnd = new Random();
+				}
+				@for (int i = 0; i < 5; i++)
+				{
+					<tr>
+						<td style="text-align:center;"><input type="checkbox" /></td>
+						<td><div></div><i class="far fa-star text-success" style="font-size:12px; margin-right:10px;@(i>1? "visibility:hidden;":"")"></i> @(rnd.Next(1079905, 1979905) * (i + 1)) - Employee @(rnd.Next(4, 9) * (i + 1))</td>
+						<td>
+							<select style="width:100%;" class="form-control">
+								<option value="">Active</option>
+								<option>Transferred Out</option>
+								<option>LOA</option>
+								<option>Non-Promote</option>
+								<option>Termed</option>
+							</select>
+						</td>
+						<td><textarea cols="50" rows="1" style="width:100%;" class="form-control"></textarea></td>
+					</tr>
+				}
+			</tbody>
+
+		</table>
+
+		<div class="col-md-12" style="padding:15px 0; text-align: left;">
+			<div class="col-md-4" style="padding:0;">
+				<button type="button" class="btn btn-default btn-danger btn-sm" id="rosterAddCancelButton"><i class="fa fa-user-times"></i>&nbsp; Delete Selected Participants</button>
+			</div>
+			<div class="col-md-3" style="padding:0;">
+				<span class=""><span class="badge badge-info">5</span> Current Session Roster</span>
+			</div>
+
+			<div class="col-md-2" style="padding:0;">
+				<span class=""><span class="badge badge-info">7</span> Seats Available</span>
+			</div>
+
+			<div class="col-md-3">
+				<i class="far fa-star"></i> Not in Defined Population
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(function () {
+		atc.rosterTable = $('#rosterTable').DataTable({
+			paging: false,
+			searching: false,
+			info: false,
+			//"orderCellsTop": true,
+			fixedHeader: {
+				headerOffset: 50
+			}
+		});
+	});
+</script>

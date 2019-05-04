@@ -1,0 +1,77 @@
+﻿@model IReadOnlyList<Training>
+@{
+	ViewData["Title"] = "TMS";
+}
+@section headBar2Left{
+	<span id="pageTitle">Trainings</span>
+}
+@section headBar2Right{
+	<button class="btn btn-success btn-sm" id="newTrainingButton"><span class="fa fa-plus"></span>&nbsp; New Training</button>
+	<button style="margin-right:10px; margin-left:5px;" class="btn btn-info btn-sm"><span class="fas fa-file-export"></span>&nbsp; Export to Excel</button>
+
+}
+
+<table id="trainingsTable" class="table table-striped table-bordered hover compact" style="width:100%">
+	<thead>
+		<tr>
+			<th style="width:230px;">Training Name</th>
+			<th style="width:230px;">Description</th>
+			<th>Year</th>
+			<th>Population Key</th>
+			<th class="select-filter">Active?</th>
+			<th style="min-width:120px !important;">Sessions</th>
+			<th style="min-width:100px !important;"></th>
+		</tr>
+		<tr class="x-filter-row">
+			<th></th>
+			<th></th>
+			<th>
+				<select style="width:100%;">
+					<option value="">All</option>
+					<option>2017</option>
+					<option>2016</option>
+				</select>
+			</th>
+			<th></th>
+			<th>
+				<select style="width:100%;">
+					<option value="">All</option>
+					<option>Yes</option>
+					<option>No</option>
+				</select>
+			</th>
+			<th></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>@item.Name</td>
+				<td>@item.Description</td>
+				<td>@item.TrainingYear</td>
+				<td>@item.PopulationKey</td>
+				<td style="text-align:center;">
+					<span style=" width:60px !important; padding:5px; display: inline-block !important;" class="label @(item.IsActive ? "label-success" : "label-danger") ">
+						@item.IsActive.ToYesNoString()
+					</span>
+				</td>
+				<td style="text-align:center;">
+					10
+					<a href="#" class="x-sessions-list-button" style="padding:10px;" data-toggle="tooltip" title="sessions list"><i class="fas fa-list" style="color:#fa085d"></i></a>
+					<a href="#" class="x-sessions-cal-button" style="padding:10px;" data-toggle="tooltip" title="sessions calendar"><i class="far fa-calendar-alt" style="color:#fa085d"></i></a>
+					<a href="#" class="x-new-session-button" style="padding:10px;" data-toggle="tooltip" title="create new session"><i class="fas fa-plus-circle" style="color:#0094ff"></i></a>
+
+				</td>
+				<td style="text-align:center;">
+					<a href="#" class="x-edit-training-button" style="padding:10px;" data-toggle="tooltip" title="edit"><i class="far fa-edit" style="color:#0094ff"></i></a>
+					<a href="#" style="padding:10px;" data-toggle="tooltip" title="generate report"><i class="far fa-file-excel" style="color:green;"></i></a>
+					<a href="#" class="x-delete-button" style="padding:10px;" data-toggle="tooltip" title="delete"><i class="far fa-trash-alt" style="color:gray"></i></a>
+				</td>
+			</tr>
+
+		}
+	</tbody>
+</table>
+

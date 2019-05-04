@@ -1,0 +1,22 @@
+﻿@{
+	@inject ISecurityService securityService;
+	var isImpersonating = securityService.HasImpersonationToken();
+}
+<ul id="mainMenu" class="dropdown-menu dropdown-menu-right nav main-menu" style="margin-top:10px; margin-right:-14px;">
+	<nav-menu asp-controller="Home" asp-action="Index" id="mainMenuDash" class="fa-tachometer-alt">Dashboard</nav-menu>
+	<li role="separator" class="divider"></li>
+	<nav-menu asp-controller="Home" asp-action="Trainings" id="mainMenuTraining" class="fa-list">Trainings</nav-menu>
+	<li role="separator" class="divider"></li>
+	<nav-menu asp-controller="Admin" asp-action="ManageRoles" id="mainMenuAdmin" class="fa-shield-alt">Admin</nav-menu>
+	@if (!isImpersonating)
+	{
+		<nav-menu asp-controller="Admin" asp-action="Impersonate" id="mainMenuImpersonate" class="fa-feather-alt">Impersonate</nav-menu>
+	}
+	else
+	{
+		<nav-menu asp-controller="Admin" asp-action="StopImpersonate" id="mainMenuStopImpersonate" class="fa-feather-alt">Stop Impersonate</nav-menu>
+	}
+	<nav-menu asp-controller="Admin" asp-action="ManageDelegates" id="mainMenuManageDelegates" class="fa-address-card">Manage Delegates</nav-menu>
+	<li role="separator" class="divider"></li>
+	<nav-menu asp-controller="Poc" asp-action="Index" id="mainMenuDash" class="fa-arrow-right">POC</nav-menu>
+</ul>

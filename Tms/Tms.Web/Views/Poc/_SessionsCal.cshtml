@@ -1,0 +1,156 @@
+﻿<div id="sessionsContainerCal" class="">
+	<div class="col-md-3">
+		<form>
+			<div class="form-group">
+				<label for="">Year</label>
+				<select class="form-control">
+					<option value=""></option>
+					<option>2017</option>
+					<option>2016</option>
+					<option selected="selected">2015</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="">Month</label>
+				<select class="form-control">
+					<option value=""></option>
+					<option>Jan</option>
+					<option>Feb</option>
+					<option>Mar</option>
+					<option selected="selected">Nov</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="">Training Name</label>
+				<select class="form-control">
+					<option value=""></option>
+					<option>Basic Training - Angular</option>
+					<option>Adv Dot Net Core</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="">Region</label>
+				<select class="form-control">
+					<option value=""></option>
+					<option>East</option>
+					<option>West</option>
+				</select>
+			</div>
+			<div class="form-check">
+				<input type="checkbox" class="form-check-input" id="exampleCheck1">
+				<label class="form-check-label" for="exampleCheck1">Is Active</label>
+			</div>
+			<button type="button" class="btn btn-primary"><i class="fas fa-filter"></i> Filter</button>
+		</form>
+	</div>
+	<div class="col-md-9">
+		<div id='calendar'></div>
+	</div>
+</div>
+<style>
+	#calendar {
+		/*max-width: 900px;*/
+		margin: 0 auto;
+	}
+	.test {
+		color: #dc089d;
+	}
+</style>
+<script>
+	$(function () {
+		var eventColor = ["green", "purple", "#46b8da", "#dc089d", "maroon"];
+
+		$('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,listMonth'
+			},
+			defaultDate: '2015-11-12',
+			navLinks: true, // can click day/week names to navigate views
+			editable: true,
+			eventLimit: true, // allow "more" link when too many events
+			events: [
+				//sessions data
+
+				{
+					title: 'My Session Angular',
+					start: '2015-11-01',
+					color: '#dc089d',
+				},
+				{
+					title: 'My Session Dot net core',
+					start: '2015-11-02',
+					color: 'maroon',
+				},
+				//{
+				//	title: 'Long Event',
+				//	start: '2018-11-07',
+				//	end: '2018-11-10'
+				//},
+				//{
+				//	id: 999,
+				//	title: 'Repeating Event',
+				//	start: '2018-11-09T16:00:00'
+				//},
+				//{
+				//	id: 999,
+				//	title: 'Repeating Event',
+				//	start: '2018-11-16T16:00:00'
+				//},
+				//{
+				//	title: 'Conference',
+				//	start: '2018-11-11',
+				//	end: '2018-11-13'
+				//},
+				//{
+				//	title: 'Meeting',
+				//	start: '2018-11-12T10:30:00',
+				//	end: '2018-11-12T12:30:00'
+				//},
+				//{
+				//	title: 'Lunch',
+				//	start: '2018-11-12T12:00:00'
+				//},
+				//{
+				//	title: 'Meeting',
+				//	start: '2018-11-12T14:30:00'
+				//},
+				//{
+				//	title: 'Happy Hour',
+				//	start: '2018-11-12T17:30:00'
+				//},
+				//{
+				//	title: 'Dinner',
+				//	start: '2018-11-12T20:00:00'
+				//},
+				//{
+				//	title: 'Birthday Party',
+				//	start: '2018-11-13T07:00:00'
+				//},
+				{
+					title: 'Click for Google',
+					url: 'http://google.com/',
+					start: '2018-11-28'
+				},
+				@{
+					//var t = 1;
+					foreach (var item in Model.Sessions)
+					{
+						//if (t > 1) { break; }
+						//t++;
+
+						<text>
+						{
+							title: '@item.SessionName',
+							start: '@item.StartDate.ToString("yyyy-MM-dd")',
+							end: '@item.EndDate.ToString("yyyy-MM-dd")',
+							color: eventColor[Math.round(Math.random() * eventColor.length)]
+						},
+						</text>
+					}
+				}
+			]
+		});
+	});
+</script>
